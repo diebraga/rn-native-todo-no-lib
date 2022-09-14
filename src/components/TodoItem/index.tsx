@@ -9,20 +9,33 @@ type TodoItemProps = {
   isCompleted: boolean;
 }
 
+type CompletedStateFn = {
+  textDecorationLine: "none" | "line-through"
+  textColor: string
+}
+
 export const TodoItem: React.FC<TodoItemProps> = ({
   name,
   onRemove,
   onComplete,
   isCompleted
 }) => {
-  const isCompleteState = () => {
-    if (!isCompleted) return "none"
-    else return "line-through"
+  const isCompleteState = (): CompletedStateFn => {
+    if (!isCompleted) return {
+      textDecorationLine: "none",
+      textColor: "#fff"
+    }
+    else {
+      return {
+        textDecorationLine: "line-through",
+        textColor: "#E23C44"
+      }
+    }
   }
   return (
     <View style={todoStyles.container}>
       <TouchableOpacity style={todoStyles.textContainer} onPress={onComplete}>
-        <Text style={{ color: "#fff", marginLeft: 16, textDecorationLine: isCompleteState() }}>{name}</Text>
+        <Text style={{ color: isCompleteState().textColor, marginLeft: 16, textDecorationLine: isCompleteState().textDecorationLine }}>{name}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={todoStyles.button}
