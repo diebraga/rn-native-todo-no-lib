@@ -35,7 +35,14 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   return (
     <View style={todoStyles.container}>
       <TouchableOpacity style={todoStyles.textContainer} onPress={onComplete}>
-        <Text style={{ color: isCompleteState().textColor, marginLeft: 16, textDecorationLine: isCompleteState().textDecorationLine }}>{name}</Text>
+        <Text
+          style={{
+            color: isCompleteState().textColor,
+            marginLeft: 16,
+            textDecorationLine: isCompleteState().textDecorationLine
+          }}>
+          {name}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={todoStyles.button}

@@ -1,7 +1,8 @@
 import { View, Text, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { homeStyles } from './styles'
 import { TodoItem } from '../../components/TodoItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type Todo = {
@@ -10,16 +11,20 @@ type Todo = {
   isCompleted: boolean
 }
 
+const TODO_IN_ASYNC_STORAGE = "@todo:app:test"
+
 export const Home: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [todoName, setTodoName] = useState("")
-  console.log(todos)
-  const handleRemoveTodo = (id: number): void => {
+
+  const handleRemoveTodo = async (id: number) => {
+    const listWithDeletedItem = todos.filter(todo => todo.id !== id)
+    await AsyncStorage.setItem(TODO_IN_ASYNC_STORAGE, JSON.stringify(listWithDeletedItem))
     return Alert.alert("Delete", `Are you you want to delete this item?`, [
       {
         text: "Yes", onPress: () => {
           alert(`Todo deleted.`)
-          return setTodos(todos.filter(todo => todo.id !== id))
+          return setTodos(listWithDeletedItem)
         }
       },
       { text: "No", style: "cancel" }
@@ -33,9 +38,10 @@ export const Home: React.FC = () => {
         : todo
     )
     setTodos(arrayWithChangedTodo)
+    await AsyncStorage.setItem(TODO_IN_ASYNC_STORAGE, JSON.stringify(arrayWithChangedTodo))
   }
 
-  const handleAddNewTodo = () => {
+  const handleAddNewTodo = async () => {
     const newTodo: Todo = {
       id: (todos.length) + 1,
       name: todoName,
@@ -47,7 +53,25 @@ export const Home: React.FC = () => {
       alert("Todo already exists")
     }
     setTodoName("")
+    const todoList = [
+      ...todos,
+      newTodo
+    ]
+    await AsyncStorage.setItem(TODO_IN_ASYNC_STORAGE, JSON.stringify(todoList))
   }
+
+  const loadUserStoredData = async () => {
+    const storedData = await AsyncStorage.getItem(TODO_IN_ASYNC_STORAGE)
+    if (storedData) {
+      const todoData = JSON.parse(storedData) as Todo[]
+      setTodos(todoData)
+    }
+  }
+
+  useEffect(() => {
+    loadUserStoredData()
+  }, [])
+
 
   return (
     <View style={homeStyles.container}>
