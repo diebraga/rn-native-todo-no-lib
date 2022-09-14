@@ -21,6 +21,11 @@ export const homeStyles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 4,
   },
+  helperTiTleView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
   layoutView: {
     marginTop: 100,
     maxWidth: "90%",

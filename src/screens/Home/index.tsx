@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, FlatList, Alert, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { homeStyles } from './styles'
 import { TodoItem } from '../../components/TodoItem';
@@ -68,6 +68,12 @@ export const Home: React.FC = () => {
     }
   }
 
+  const clearList = async () => {
+    await AsyncStorage.setItem(TODO_IN_ASYNC_STORAGE, JSON.stringify([]))
+    setTodos([])
+    return alert("Your list has been cleared")
+  }
+
   useEffect(() => {
     loadUserStoredData()
   }, [])
@@ -77,9 +83,16 @@ export const Home: React.FC = () => {
     <View style={homeStyles.container}>
       <View style={homeStyles.layoutView}>
         <Text style={homeStyles.headingText}>Todo-List</Text>
-        <Text style={homeStyles.headingHelperText}>
-          Active todos: {todos.length}
-        </Text>
+        <View style={homeStyles.helperTiTleView}>
+          <Text style={homeStyles.headingHelperText}>
+            Active todos: {todos.length}
+          </Text>
+          <Button
+            title='Clear'
+            color="#E23C44"
+            onPress={clearList}
+          />
+        </View>
         <View style={homeStyles.form}>
           <TextInput
             style={homeStyles.input}
