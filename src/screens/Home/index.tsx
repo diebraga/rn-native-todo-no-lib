@@ -42,6 +42,7 @@ export const Home: React.FC = () => {
   }
 
   const handleAddNewTodo = async () => {
+    if (todoName.length < 1 || todoName.length > 20) return
     const newTodo: Todo = {
       id: (todos.length) + 1,
       name: todoName,
@@ -69,6 +70,7 @@ export const Home: React.FC = () => {
   }
 
   const clearList = async () => {
+    if (todos.length < 1) return
     await AsyncStorage.setItem(TODO_IN_ASYNC_STORAGE, JSON.stringify([]))
     setTodos([])
     return alert("Your list has been cleared")
@@ -87,11 +89,9 @@ export const Home: React.FC = () => {
           <Text style={homeStyles.headingHelperText}>
             Active todos: {todos.length}
           </Text>
-          <Button
-            title='Clear'
-            color="#E23C44"
-            onPress={clearList}
-          />
+          <TouchableOpacity onPress={clearList}>
+            <Text style={homeStyles.clearButtonText}>Clear</Text>
+          </TouchableOpacity>
         </View>
         <View style={homeStyles.form}>
           <TextInput

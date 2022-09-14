@@ -26,6 +26,10 @@ export const homeStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between"
   },
+  clearButtonText: {
+    color: "#E23C44",
+    fontSize: 16,
+  },
   layoutView: {
     marginTop: 100,
     maxWidth: "90%",
