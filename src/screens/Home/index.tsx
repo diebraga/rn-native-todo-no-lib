@@ -13,7 +13,7 @@ type Todo = {
 export const Home: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [todoName, setTodoName] = useState("")
-
+  console.log(todos)
   const handleRemoveTodo = (id: number): void => {
     return Alert.alert("Delete", `Are you you want to delete this item?`, [
       {
@@ -26,9 +26,18 @@ export const Home: React.FC = () => {
     ])
   }
 
+  const handleMarkAsCompleted = async (id: number) => {
+    const arrayWithChangedTodo = todos.map(
+      todo => todo.id === id
+        ? { ...todo, isCompleted: todo.isCompleted ? false : true }
+        : todo
+    )
+    setTodos(arrayWithChangedTodo)
+  }
+
   const handleAddNewTodo = () => {
     const newTodo: Todo = {
-      id: todos.length + 1,
+      id: (todos.length) + 1,
       name: todoName,
       isCompleted: false
     }
@@ -75,6 +84,7 @@ export const Home: React.FC = () => {
               {...item}
               key={item.id}
               onRemove={() => handleRemoveTodo(item.id)}
+              onComplete={() => handleMarkAsCompleted(item.id)}
             />
             }
           />

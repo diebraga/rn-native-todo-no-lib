@@ -3,21 +3,27 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { todoStyles } from './styles';
 
 type TodoItemProps = {
-  id: number;
   name: string;
   onRemove: () => void;
+  onComplete: () => void;
+  isCompleted: boolean;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
-  id,
   name,
-  onRemove
+  onRemove,
+  onComplete,
+  isCompleted
 }) => {
+  const isCompleteState = () => {
+    if (!isCompleted) return "none"
+    else return "line-through"
+  }
   return (
     <View style={todoStyles.container}>
-      <View style={todoStyles.textContainer}>
-        <Text style={todoStyles.text}>{name}</Text>
-      </View>
+      <TouchableOpacity style={todoStyles.textContainer} onPress={onComplete}>
+        <Text style={{ color: "#fff", marginLeft: 16, textDecorationLine: isCompleteState() }}>{name}</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={todoStyles.button}
         onPress={onRemove}

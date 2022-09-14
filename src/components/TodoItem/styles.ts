@@ -6,10 +6,6 @@ export const todoStyles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 10,
   },
-  text: {
-    color: "#fff",
-    marginLeft: 16,
-  },
   button: {
     height: 56,
     borderRadius: 5,
